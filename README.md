@@ -9,15 +9,15 @@ Non plus sérieusement c'est le projet de RIW, il va se construire de la facon s
 
 * Mettre en place un SRI avec des modules permettant de faire des recherches d'infos sur la collection CS276, c'est à dire au moins :
 
-** Un module d'indexation
+  * Un module d'indexation
 
-** Un module de recherche
+  * Un module de recherche
 
-** De la compression d'index
+  * De la compression d'index
 
-*** En bonus des modèles de langue
+    * En bonus des modèles de langue
 
-*** Des approches de ranking récentes
+    * Des approches de ranking récentes
 
 * Un notebook contenant les justifications statistiques et explications des choix techniques
 
