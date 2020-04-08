@@ -1,5 +1,7 @@
 from Utils.Loader import article_word_tokenize, remove_stop_words, collection_stemming, collection_lemmatize
 import numpy as np
+from tt import BooleanExpression
+
 
 def load_relevance_judgments(filename, requests):
     relevance_judgments = {}
@@ -10,8 +12,9 @@ def load_relevance_judgments(filename, requests):
             relevance_judgments[request] = []
             for line in doc:
                 if line[0] == str(0):
-                    relevance_judgments[request].append(line[2:].rstrip('\n'))
+                    relevance_judgments[request].append(line.rstrip('\n'))
     return relevance_judgments
+
 
 def traitement(requetes, stop_words):
     requetes_tokenize = {}
@@ -22,12 +25,11 @@ def traitement(requetes, stop_words):
     traites = collection_lemmatize(requetes_lemmatize)
     return traites
 
-from tt import BooleanExpression
-
 
 def transformation_query_to_postfixe(query):
     b = BooleanExpression(query)
     return b.postfix_tokens
+
 
 def transformation_lem_query_to_boolean(query):
     boolean_query=[]
@@ -37,13 +39,14 @@ def transformation_lem_query_to_boolean(query):
     boolean_query.pop()
     return boolean_query
 
-def merge_and_postings_list(posting_term1,posting_term2):
+
+def merge_and_postings_list(posting_term1, posting_term2):
     result=[]
     n = len(posting_term1)
     m = len(posting_term2)
     i = 0
     j = 0
-    while i < n and j <m:
+    while i < n and j < m:
         if posting_term1[i] == posting_term2[j]:
             result.append(posting_term1[i])
             i = i+1
@@ -52,36 +55,39 @@ def merge_and_postings_list(posting_term1,posting_term2):
             if posting_term1[i] < posting_term2[j]:
                 i = i+1
             else:
-                j=j+1
+                j = j+1
     return result
 
-def boolean_operator_processing_with_inverted_index(BoolOperator,posting_term1,posting_term2):
-    result=[]
+
+def boolean_operator_processing_with_inverted_index(BoolOperator, posting_term1, posting_term2):
+    result = []
     if BoolOperator == "AND":
         result.append(merge_and_postings_list(posting_term1,posting_term2))
-    elif BoolOperator=="OR" :
+    elif BoolOperator == "OR":
         result.append(merge_or_postings_list(posting_term1,posting_term2))
     elif BoolOperator == "NOT":
         result.append(merge_and_not_postings_list(posting_term1,posting_term2))
     return result
 
-def processing_boolean_query_with_inverted_index(booleanOperator,query, inverted_index):
+
+def processing_boolean_query_with_inverted_index(booleanOperator, query, inverted_index):
     relevant_docs = {}
     evaluation_stack = []
-    for term in query:
+    for i, term in enumerate(query):
         if term.upper() not in booleanOperator:
             evaluation_stack.append(inverted_index[term.upper()])
         else:
             if term.upper() == "NOT":
-                operande= evaluation_stack.pop()
-                eval_prop = boolean_operator_processing_with_inverted_index(term.upper(), evaluation_stack.pop(),operande)
+                operande = evaluation_stack.pop()
+                eval_prop = boolean_operator_processing_with_inverted_index(term.upper(), evaluation_stack.pop(), operande)
                 evaluation_stack.append(eval_prop[0])
                 evaluation_stack.append(eval_prop[0])
             else:
                 operator = term.upper()
-                eval_prop =  boolean_operator_processing_with_inverted_index(operator, evaluation_stack.pop(),evaluation_stack.pop())
+                eval_prop = boolean_operator_processing_with_inverted_index(operator, evaluation_stack.pop(), query[i+1])
                 evaluation_stack.append(eval_prop[0])
-    return  evaluation_stack.pop()
+    return evaluation_stack.pop()
+
 
 def evaluate_boolean_model(requests, collection_index, relevance_judgments, BooleanOperator):
     evaluation_boolean = {}
@@ -103,4 +109,4 @@ def evaluate_boolean_model(requests, collection_index, relevance_judgments, Bool
         beta = .5
         Fb = (1 + beta ** 2) * precision * recall / (beta ** 2 * precision * recall)
         evaluation_boolean[request] = {"recall": recall, "precision": precision, "F1": F1, "Fb": Fb}
-    return evaluation_boolean
+    return request_with_operator, evaluation_boolean

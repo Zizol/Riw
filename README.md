@@ -46,6 +46,8 @@ Le script se trouve dans `sample.py`. Pour l'utiliser :
 	* Lance le module d'indexation
 	
 	* Crée les fichiers d'index dans le dossier `Indexes/`
+	
+Comme cette étape prend du temps, il est suggéré de la lancer tôt, puis de regarder le notebook pour passer le temps
 
 * `python sample.py recherche --query zedezd.zed`
 
@@ -59,5 +61,6 @@ Le script se trouve dans `sample.py`. Pour l'utiliser :
 
 ### Justifications techniques
 
-Un notebook retraçant les différentes étapes du script de façon visuelle est disponible. Il affiche sous forme de graphes et de métriques les différentes données qui ont contribué au choix dans les modèles.
+Un notebook retraçant les différentes étapes du script de façon visuelle est disponible. 
+Il affiche sous forme de graphes et de métriques les différentes données qui ont contribué au choix dans les modèles.
 	

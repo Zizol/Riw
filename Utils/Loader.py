@@ -1,22 +1,28 @@
 import os
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
+from collections import Counter
+import matplotlib.pyplot as plt
+import seaborn as sns
+from nltk.stem import PorterStemmer
+from collections import OrderedDict
+import pickle
 
 
-def loadData(directoryname):
+def loadData(directoryname, doc_type):
     corpus = {}
     for file in os.listdir(directoryname):
-        if file[-5:] == ".html":
+        if file.split('.')[-1] == doc_type or doc_type == "all":
             with open(directoryname + file, 'r') as f:
                 # A completer
                 doc = f.readlines()
-                corpus[file] = doc[0]
+                corpus[directoryname[-2:] + file] = doc[0]
 
     return (corpus)
 
-import nltk
-from nltk.tokenize import word_tokenize
 
 def article_word_tokenize(text):
-    if type(text)!= str:
+    if type(text) != str:
         raise Exception("The function takes a string as input data")
     else:
         # A COMPLETER
@@ -26,13 +32,6 @@ def article_word_tokenize(text):
             while stop in tokens:
                 del tokens[tokens.index(stop)]
         return tokens
-
-
-from collections import Counter
-import collections
-import matplotlib.pyplot as plt
-import seaborn as sns
-import numpy as np
 
 
 def count_frequency(collection):
@@ -73,7 +72,6 @@ def remove_stop_words(collection, stop_word_file):
 
     return collection_filtered
 
-from nltk.stem import PorterStemmer
 
 def collection_stemming(segmented_collection):
     stemmer = PorterStemmer () # initialisation d'un stemmer
@@ -86,7 +84,6 @@ def collection_stemming(segmented_collection):
         stemmed_collection[doc] = stemmed_string
     return stemmed_collection
 
-from nltk.stem import WordNetLemmatizer
 
 def collection_lemmatize(segmented_collection):
     stemmer = WordNetLemmatizer () # initialisation d'un lemmatiseur
@@ -100,15 +97,13 @@ def collection_lemmatize(segmented_collection):
         lemmatized_collection[doc] = lemmatized_string
     return lemmatized_collection
 
+
 def extract_indexation_vocabulary(processed_collection):
     vocabulary = set()
     # a completer
     for doc in processed_collection.keys():
         vocabulary.update(processed_collection[doc].split(" "))
     return vocabulary
-
-
-from collections import OrderedDict
 
 
 def build_inverted_index(collection, type_index):
@@ -151,9 +146,6 @@ def build_inverted_index(collection, type_index):
     return inverted_index
 
 
-import pickle
-
-
 # Ecriture sur disque
 def save_inverted_index_pickle(inverted_index, filename):
     with open(filename, "wb") as f:
@@ -162,7 +154,6 @@ def save_inverted_index_pickle(inverted_index, filename):
 
 
 # Chargement
-
 def load_inverted_index_pickle(filename):
     with open(filename, 'rb') as fb:
         index = pickle.load(fb)
