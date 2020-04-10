@@ -23,7 +23,26 @@ Projet RIW pour l'ecole
 
 Le SRI sera évalué avec des requêtes types.
 
-Les données sont la collection CS276
+Les données sont la collection CS276. Pour que ce repo puisse fonctionner, il faut placer le dossier CS276 au même niveau que ce repo, et placer le dossier pa1-data dans celui-ci (pour l'entrainement)
+
+La structure du dossier une fois sur ordinateur devrait donc ressembler à ceci :
+
+```bash
+.
+├── CS276
+│   ├── Link_to_the_collection.docx
+│   ├── Queries
+│   ├── pa1-data
+│   └── pa3-data
+└── Final
+    ├── Indexes
+    ├── Justifications.ipynb
+    ├── Output
+    ├── README.md
+    ├── Utils
+    ├── requirements.txt
+    └── sample.py
+```
 
 ## Comment naviguer ce repo et utiliser le script
 
