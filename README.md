@@ -85,6 +85,6 @@ Comme cette étape prend du temps, il est suggéré de la lancer tôt, puis de r
 
 ### Justifications techniques
 
-Un notebook retraçant les différentes étapes du script de façon visuelle est disponible. 
+Un notebook retraçant les différentes étapes du script de façon visuelle est disponible dans `Justifications.ipynb`
 Il affiche sous forme de graphes et de métriques les différentes données qui ont contribué aux choix dans les modèles.
 	
