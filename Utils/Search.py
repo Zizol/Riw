@@ -3,7 +3,7 @@ import numpy as np
 from tt import BooleanExpression
 
 
-def load_relevance_judgments(filename, requests):
+def load_relevance_judgments(filename, requests, model_type):
     relevance_judgments = {}
     # A completer
     with open(filename) as f:
@@ -11,7 +11,7 @@ def load_relevance_judgments(filename, requests):
         for request in requests:
             relevance_judgments[request] = []
             for line in doc:
-                if line[0] == str(0):
+                if line.rstrip('\n').split('.')[-1] == model_type or model_type == "all":
                     relevance_judgments[request].append(line.rstrip('\n'))
     return relevance_judgments
 

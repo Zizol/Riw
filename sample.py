@@ -40,14 +40,14 @@ def recherche(query, model_type, weigth_query, weigth_doc):
         requests = {}
         requests[0] = f.read()
     traite = traitement(requests, frequent_words)
-    relevance_judgments = load_relevance_judgments('../CS276/Queries/dev_output/{}.out'.format(query[-1]), requests)
+    relevance_judgments = load_relevance_judgments('../CS276/Queries/dev_output/{}.out'.format(query[-1]), requests, model_type)
     vocabulary = {doc for doc in list(index_document.keys())}
     print("processing query...")
     print(traite[0])
     if model_type == "boolean":
         results, evaluation = evaluate_boolean_model({0: traite[0].split()}, index_document, relevance_judgments, "AND")
     else:
-        results, evaluation = run_model_and_evaluate({0: traite[0]}, index_document, [weigth_query, weigth_doc], relevance_judgments, frequent_words, index_frequence)
+        results, evaluation = run_model_and_evaluate({0: traite[0]}, index_document, [weigth_doc, weigth_query], relevance_judgments, frequent_words, index_frequence)
     print("printing output...")
     print(results)
     with open("Output/{}.{}_results({}-{})".format(query[-1], model_type, weigth_query, weigth_doc), "a") as file:

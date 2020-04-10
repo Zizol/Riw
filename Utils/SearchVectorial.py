@@ -15,7 +15,7 @@ def remove_non_index_term(query,inverted_index):
 def pre_processed_query(query,inverted_index, frequent_words):
     tokenized_query = article_word_tokenize(query)
     filt_query = remove_non_index_term(tokenized_query, inverted_index)
-    filtered_query = remove_stop_words({"query":" ".join(filt_query)}, frequent_words)
+    filtered_query = remove_stop_words({"query": " ".join(filt_query)}, frequent_words)
     normalized_query = collection_lemmatize(filtered_query)
     return normalized_query["query"]
 
@@ -70,11 +70,11 @@ def processing_vectorial_query(query, inverted_index, stats_collection, weightin
                 if weighting_scheme_document == "frequency":
                     w_term_doc = get_tf(term, doc, frequency_index)
                 if weighting_scheme_document == "tf_idf_normalize":
-                    w_term_doc = get_tf_normalise(term, doc, inverted_index, stats_collection) * get_idf(term, inverted_index, nb_doc)
+                    w_term_doc = get_tf_normalise(term, doc, frequency_index, stats_collection) * get_idf(term, frequency_index, nb_doc)
                 if weighting_scheme_document == "tf_idf_logarithmic":
-                    w_term_doc = get_tf_logarithmique (term, doc, inverted_index) * get_idf(term, inverted_index, nb_doc)
+                    w_term_doc = get_tf_logarithmique (term, doc, frequency_index) * get_idf(term, frequency_index, nb_doc)
                 if weighting_scheme_document == "tf_idf_logarithmic_normalize":
-                    w_term_doc = get_tf_logarithme_normalise (term, doc, inverted_index, stats_collection) * get_idf(term, inverted_index, nb_doc)
+                    w_term_doc = get_tf_logarithme_normalise (term, doc, frequency_index, stats_collection) * get_idf(term, frequency_index, nb_doc)
                 relevant_docs[doc] = relevant_docs[doc] + w_term_doc * w_term_query
     ordered_relevant_docs = OrderedDict(sorted(relevant_docs.items(), key=lambda t: t[1], reverse=True))
     return ordered_relevant_docs
